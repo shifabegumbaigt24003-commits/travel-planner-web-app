@@ -1,0 +1,637 @@
+/* ================================================================
+   style.css — Wanderlust Travel Planner
+   All styling for the application
+================================================================ */
+
+/* ── CSS Custom Properties (Design Tokens) ── */
+:root {
+  --ocean:   #0a3d62;
+  --sky:     #1e87c8;
+  --wave:    #48c1e9;
+  --foam:    #e8f7ff;
+  --sand:    #fdf6ec;
+  --gold:    #f0a500;
+  --coral:   #ff6b6b;
+  --white:   #ffffff;
+  --ink:     #0d1b2a;
+  --muted:   #6b8394;
+  --success: #27ae60;
+  --error:   #e74c3c;
+  --radius:  14px;
+  --shadow:  0 8px 32px rgba(10, 61, 98, 0.15);
+  --trans:   all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================================
+   RESET & BASE
+================================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--foam);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Gradient background layer — sits behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(30, 135, 200, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(72, 193, 233, 0.10) 0%, transparent 50%),
+    linear-gradient(160deg, #e8f7ff 0%, #f5feff 50%, #fdf6ec 100%);
+  z-index: -1;
+}
+
+/* ── Typography ── */
+h1, h2, h3 { font-family: 'Playfair Display', serif; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 600; }
+
+/* ── Fade-up Keyframe Animation ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   NAVIGATION BAR
+================================================================ */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: none;                        /* JS sets to flex after login */
+  background: rgba(10, 61, 98, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+.nav-brand span { color: var(--wave); }
+
+.nav-links {
+  display: flex;
+  gap: 6px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#btn-logout {
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: #ffaaaa;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--trans);
+}
+#btn-logout:hover {
+  background: var(--coral);
+  color: var(--white);
+  border-color: var(--coral);
+}
+
+/* ================================================================
+   LAYOUT UTILITIES
+================================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
+}
+
+/* Card */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  transition: var(--trans);
+}
+.card:hover {
+  box-shadow: 0 16px 48px rgba(10, 61, 98, 0.18);
+}
+
+/* Section Wrappers — hidden/shown via JS classList */
+.section-wrapper {
+  display: none;
+  animation: fadeUp 0.5s ease both;
+}
+.section-wrapper.active {
+  display: block;
+}
+
+/* Section Grid */
+.sections-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+/* Section Header Row */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+.section-head .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--sky), var(--wave));
+  flex-shrink: 0;
+  color: var(--white);
+}
+.section-head h2 { color: var(--ocean); }
+.section-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+/* ================================================================
+   LOGIN / SIGN-UP SECTION
+================================================================ */
+#login-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(10, 61, 98, 0.2);
+  overflow: hidden;
+}
+
+/* Auth card header gradient */
+.auth-header {
+  background: linear-gradient(135deg, var(--ocean) 0%, var(--sky) 100%);
+  padding: 2.5rem 2.5rem 2rem;
+  text-align: center;
+  color: var(--white);
+}
+.auth-header .plane-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.auth-header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+.auth-header p  { opacity: 0.8; font-size: 0.9rem; font-weight: 300; }
+
+/* Tab Row */
+.auth-tabs {
+  display: flex;
+  background: var(--foam);
+  border-bottom: 1px solid rgba(30, 135, 200, 0.15);
+}
+.auth-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--trans);
+  border-bottom: 3px solid transparent;
+}
+.auth-tab.active {
+  color: var(--sky);
+  border-bottom-color: var(--sky);
+  background: var(--white);
+}
+
+/* Auth form body */
+.auth-body { padding: 2rem 2.5rem 2.5rem; }
+
+/* ================================================================
+   FORM ELEMENTS (shared across auth + planner)
+================================================================ */
+.form-group { margin-bottom: 1.2rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ocean);
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.72rem 1rem;
+  border: 2px solid #dde8f0;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--foam);
+  transition: var(--trans);
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--sky);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(30, 135, 200, 0.1);
+}
+.form-group input.error { border-color: var(--error); }
+
+/* Inline error messages (shown/hidden via JS classList) */
+.err-msg {
+  font-size: 0.78rem;
+  color: var(--error);
+  margin-top: 0.35rem;
+  display: none;
+}
+.err-msg.visible {
+  display: block;
+  animation: fadeUp 0.25s ease both;
+}
+
+/* ── Buttons ── */
+.btn {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+}
+
+/* Blue primary button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--sky) 0%, var(--ocean) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 18px rgba(30, 135, 200, 0.35);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(30, 135, 200, 0.45);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* Gold accent button */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, #e69500 100%);
+  color: var(--white);
+  box-shadow: 0 4px 18px rgba(240, 165, 0, 0.35);
+  margin-top: 0.5rem;
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(240, 165, 0, 0.45);
+}
+
+/* ================================================================
+   HERO BANNER
+================================================================ */
+#main-app { display: none; } /* JS toggles to block after login */
+
+#hero {
+  background: linear-gradient(135deg, var(--ocean) 0%, var(--sky) 60%, var(--wave) 100%);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  color: var(--white);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+/* Decorative plane watermark */
+#hero::after {
+  content: '✈';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  font-size: clamp(6rem, 15vw, 11rem);
+  opacity: 0.08;
+  line-height: 1;
+}
+#hero-greeting {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+#hero h2 {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+#hero p {
+  opacity: 0.8;
+  font-size: 0.92rem;
+  max-width: 500px;
+  line-height: 1.7;
+}
+
+/* ================================================================
+   DASHBOARD STATS GRID
+================================================================ */
+#dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+/* Individual stat card (created by JS) */
+.stat-card {
+  text-align: center;
+  padding: 1.25rem;
+  background: var(--foam);
+  border-radius: var(--radius);
+  border: 1.5px solid #dde8f0;
+  transition: var(--trans);
+}
+.stat-card:hover { border-color: var(--wave); }
+
+.stat-icon  { font-size: 1.8rem; margin-bottom: 0.4rem; }
+.stat-value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--sky);
+  font-family: 'Playfair Display', serif;
+}
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ================================================================
+   PLAN YOUR TRIP FORM
+================================================================ */
+.trip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+.trip-grid .form-group.full { grid-column: 1 / -1; }
+
+/* Success message box */
+.success-msg {
+  display: none;
+  background: linear-gradient(135deg, #e8fdf0, #d4f7e0);
+  border: 1.5px solid #a3e6bc;
+  border-radius: 10px;
+  padding: 1.1rem 1.4rem;
+  color: #1a7a3c;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 1.25rem;
+  animation: fadeUp 0.4s ease both;
+  align-items: center;
+  gap: 0.75rem;
+}
+.success-msg.visible { display: flex; }
+.success-msg::before { content: '✓'; font-size: 1.4rem; font-weight: 700; }
+
+/* ================================================================
+   TRIP CHECKLIST
+================================================================ */
+
+/* Input + button row */
+.checklist-input-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+#task-input {
+  flex: 1;
+  padding: 0.72rem 1rem;
+  border: 2px solid #dde8f0;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--foam);
+  outline: none;
+  transition: var(--trans);
+}
+#task-input:focus {
+  border-color: var(--sky);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(30, 135, 200, 0.1);
+}
+#task-input.error { border-color: var(--error); }
+
+#btn-add-task {
+  background: linear-gradient(135deg, var(--sky), var(--ocean));
+  color: var(--white);
+  border: none;
+  padding: 0.72rem 1.4rem;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--trans);
+  box-shadow: 0 4px 14px rgba(30, 135, 200, 0.3);
+}
+#btn-add-task:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(30, 135, 200, 0.4);
+}
+
+/* Inline error toast below task input */
+.input-error-toast {
+  font-size: 0.78rem;
+  color: var(--error);
+  margin-top: 0.3rem;
+  margin-bottom: 0.75rem;
+  display: none;
+}
+.input-error-toast.visible {
+  display: block;
+  animation: fadeUp 0.25s ease both;
+}
+
+/* Task counter row */
+.task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+#task-counter { color: var(--sky); font-weight: 700; }
+
+/* Task list container */
+#task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Individual task item (created via JS createElement) */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--foam);
+  border: 1.5px solid #e0eff8;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  animation: fadeUp 0.3s ease both;
+  transition: var(--trans);
+}
+.task-item:hover {
+  border-color: var(--wave);
+  box-shadow: 0 4px 14px rgba(30, 135, 200, 0.1);
+}
+
+/* Completed task state */
+.task-item.completed { opacity: 0.65; }
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.task-text { flex: 1; font-size: 0.9rem; line-height: 1.4; }
+
+/* Complete (checkmark) button */
+.btn-complete {
+  background: none;
+  border: 2px solid var(--success);
+  color: var(--success);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--trans);
+  flex-shrink: 0;
+}
+.btn-complete:hover { background: var(--success); color: var(--white); }
+.task-item.completed .btn-complete { background: var(--success); color: var(--white); }
+
+/* Delete button */
+.btn-delete {
+  background: none;
+  border: 2px solid var(--coral);
+  color: var(--coral);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--trans);
+  flex-shrink: 0;
+}
+.btn-delete:hover { background: var(--coral); color: var(--white); }
+
+/* Empty checklist state */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  list-style: none;
+}
+.empty-state span {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ================================================================
+   RESPONSIVE — MEDIA QUERIES
+================================================================ */
+@media (max-width: 680px) {
+  /* Planner form: single column on mobile */
+  .trip-grid { grid-template-columns: 1fr; }
+  .trip-grid .form-group.full { grid-column: 1; }
+
+  /* Auth card padding reduction */
+  .auth-body  { padding: 1.5rem; }
+  .auth-header { padding: 2rem 1.5rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  /* Tighter nav on small phones */
+  .nav-links { gap: 2px; }
+  .nav-link  { padding: 7px 10px; font-size: 0.8rem; }
+
+  /* Stack checklist input row */
+  .checklist-input-row { flex-direction: column; }
+  #btn-add-task { width: 100%; }
+}

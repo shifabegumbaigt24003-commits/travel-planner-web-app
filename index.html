@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wanderlust — Travel Planner</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════
+       NAVIGATION BAR
+       Hidden on page load — shown by JS after login
+  ════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-brand">Wander<span>lust</span></div>
+
+    <div class="nav-links">
+      <button class="nav-link active" id="nav-home">🏠 Home</button>
+      <button class="nav-link"        id="nav-planner">✈️ Planner</button>
+      <button class="nav-link"        id="nav-checklist">📋 Checklist</button>
+    </div>
+
+    <button id="btn-logout">Logout</button>
+  </nav>
+
+
+  <!-- ════════════════════════════════
+       LOGIN / SIGN-UP SECTION
+       Auth form fields are injected by JS (DOM manipulation)
+  ════════════════════════════════ -->
+  <section id="login-section">
+    <div class="auth-card">
+
+      <!-- Card Header -->
+      <div class="auth-header">
+        <span class="plane-icon">✈️</span>
+        <h1>Wanderlust</h1>
+        <p>Your personal travel companion</p>
+      </div>
+
+      <!-- Login / Sign-up Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">Login</button>
+        <button class="auth-tab"        id="tab-signup">Sign Up</button>
+      </div>
+
+      <!-- Form body — populated entirely by JavaScript -->
+      <div class="auth-body" id="auth-body"></div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════
+       MAIN APP
+       Hidden on page load — shown by JS after login
+  ════════════════════════════════ -->
+  <div id="main-app">
+    <div class="container">
+
+      <!-- Hero Banner -->
+      <div id="hero">
+        <div id="hero-greeting">Welcome back 👋</div>
+        <h2 id="hero-name">Ready for your next adventure?</h2>
+        <p>Plan your journey, pack your bags, and explore the world — one destination at a time.</p>
+      </div>
+
+      <!-- Three sections stacked in a single-column grid -->
+      <div class="sections-grid">
+
+        <!-- ── HOME / DASHBOARD ── -->
+        <div id="section-home" class="section-wrapper active card">
+          <div class="section-head">
+            <div class="icon">🌍</div>
+            <div>
+              <h2>Your Dashboard</h2>
+              <p class="section-sub">Overview of your travel plans</p>
+            </div>
+          </div>
+          <!-- Stat cards injected by JS -->
+          <div id="dashboard-stats"></div>
+        </div>
+
+        <!-- ── PLAN YOUR TRIP ── -->
+        <div id="section-planner" class="section-wrapper card">
+          <div class="section-head">
+            <div class="icon">✈️</div>
+            <div>
+              <h2>Plan Your Trip</h2>
+              <p class="section-sub">Fill in your travel details</p>
+            </div>
+          </div>
+          <!-- Planner form injected by JS -->
+          <div id="planner-form-container"></div>
+        </div>
+
+        <!-- ── TRIP CHECKLIST ── -->
+        <div id="section-checklist" class="section-wrapper card">
+          <div class="section-head">
+            <div class="icon">📋</div>
+            <div>
+              <h2>Trip Checklist</h2>
+              <p class="section-sub">Everything you need to pack</p>
+            </div>
+          </div>
+          <!-- Checklist injected by JS -->
+          <div id="checklist-container"></div>
+        </div>
+
+      </div><!-- /.sections-grid -->
+    </div><!-- /.container -->
+  </div><!-- /#main-app -->
+
+
+  <!-- External JavaScript (deferred so DOM is ready) -->
+  <script src="app.js" defer></script>
+
+</body>
+</html>
